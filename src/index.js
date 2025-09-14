@@ -100,6 +100,8 @@ function Menu(){
 }
 
 function Pizza(props){
+
+  if(props.pizzaObj.soldOut) return null
     
   return <li className='pizza'>
     <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
@@ -126,6 +128,8 @@ function Footer(){
   // }else{
   //   alert("Sorry we are closed!")
   // }
+
+  if(!isOpen) 
 
   return <footer className='footer'>
     {
