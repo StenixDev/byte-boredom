@@ -75,14 +75,17 @@ function Menu(){
   return <main className='menu'>
     <h2>Our Menu</h2>
 
+    
+
     {
-      numPizza > 0 ? (
+      numPizza > 0 ? (<>
+        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form,</p>
         <ul className='pizzas'>
       {
         pizzas.map(pizza => <Pizza key={pizza.name} pizzaObj = {pizza} />)
       }
     </ul>
-      ) : (<p>We're still working on our menu. Please comeback later</p>)
+      </>) : (<p>We're still working on our menu. Please comeback later</p>)
     }
 
     
