@@ -3,7 +3,7 @@ import { CloudSun } from 'lucide-react';
 
 function App() {
 
-  console.log("test");
+  console.log("testxaaa");
 
   return (
     <div className='w-xl mx-auto pt-20 flex flex-col items-center justify-center'>
