@@ -1,6 +1,10 @@
 import { CloudSun } from 'lucide-react';
 
+
 function App() {
+
+  console.log("test")
+
   return (
     <div className='w-xl mx-auto pt-20 flex flex-col items-center justify-center'>
       <h1 className='text-3xl font-bold text'>The Cityx</h1>

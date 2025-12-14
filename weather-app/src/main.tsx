@@ -3,6 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
+// In your index.js or App.js
+import eruda from 'eruda';
+
+
+eruda.init();
+
+
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
