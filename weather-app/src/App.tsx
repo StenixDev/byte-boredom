@@ -51,17 +51,26 @@ function App() {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&current_weather=true`
+          `https://api.open-meteo.com/v1/forecast?
+latitude=${params.latitude}&
+longitude=${params.longitude}&
+current=temperature_2m,relative_humidity_2m,is_day,precipitation,rain,weather_code,wind_speed_10m&
+timezone=auto`
         );
         const data = await res.json();
-        const result = data.current_weather.temperature;
+        //const result = data.current_weather.temperature;
 
-        setData((prevData) => ({
-          ...prevData,
-          temperature: result,
-          condition:
-            weatherCodeMap[data.current_weather.weathercode] || 'Unknown',
-        }));
+        console.log(
+          data.current.temperature_2m,
+          data.current_units['temperature_2m']
+        );
+
+        // setData((prevData) => ({
+        //   ...prevData,
+        //   temperature: result,
+        //   condition:
+        //     weatherCodeMap[data.current_weather.weathercode] || 'Unknown',
+        // }));
 
         const getCityResponse = await fetch(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${params.latitude}&longitude=${params.longitude}`
@@ -93,7 +102,7 @@ function App() {
 
       <div className='text-[#68bdf2] flex my-10 items-center'>
         <CloudSun className='size-20' />
-        <span className='text-7xl font-bold'>{data.temperature} °C</span>
+        <span className='text-7xl font-bold'>{data?.temperature} °C</span>
       </div>
 
       <p>{data.condition}</p>
