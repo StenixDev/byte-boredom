@@ -1,6 +1,33 @@
 import { CloudSun } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { fetchWeatherApi } from 'openmeteo';
+
+type dataTypes = {
+  city: string;
+  countryName: string;
+  temperature: number;
+  condition: string;
+};
+
+const weatherCodeMap: Record<number, string> = {
+  0: 'Clear sky',
+  1: 'Mainly clear',
+  2: 'Partly cloudy',
+  3: 'Overcast',
+  45: 'Fog',
+  48: 'Depositing rime fog',
+  51: 'Light drizzle',
+  53: 'Moderate drizzle',
+  55: 'Dense drizzle',
+  61: 'Slight rain',
+  63: 'Moderate rain',
+  65: 'Heavy rain',
+  71: 'Slight snow',
+  73: 'Moderate snow',
+  75: 'Heavy snow',
+  80: 'Rain showers',
+  81: 'Heavy rain showers',
+  95: 'Thunderstorm',
+};
 
 const params = {
   latitude: 7.0731,
@@ -10,9 +37,11 @@ const params = {
 };
 
 function App() {
-  const [data, setData] = useState<{ city: string; countryName: string }>({
+  const [data, setData] = useState<dataTypes>({
     city: '',
     countryName: '',
+    temperature: 0,
+    condition: '',
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,79 +50,30 @@ function App() {
     async function fetchWeather() {
       try {
         setIsLoading(true);
-        const url = 'https://api.open-meteo.com/v1/forecast';
-        const responses = await fetchWeatherApi(url, params);
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${params.latitude}&longitude=${params.longitude}&current_weather=true`
+        );
+        const data = await res.json();
+        const result = data.current_weather.temperature;
 
-        // Process first location. Add a for-loop for multiple locations or weather models
-        const response = responses[0];
-
-        // Attributes for timezone and location
-        const latitude = response.latitude();
-        const longitude = response.longitude();
-        const elevation = response.elevation();
-        const utcOffsetSeconds = response.utcOffsetSeconds();
+        setData((prevData) => ({
+          ...prevData,
+          temperature: result,
+          condition:
+            weatherCodeMap[data.current_weather.weathercode] || 'Unknown',
+        }));
 
         const getCityResponse = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${params.latitude}&longitude=${params.longitude}`
         );
 
         const cityResult = await getCityResponse.json();
-        console.log(cityResult);
-        setData({
+
+        setData((prevData) => ({
+          ...prevData,
           city: cityResult.city,
           countryName: cityResult.countryName,
-        });
-
-        console.log(
-          `\nCoordinates: ${latitude}°N ${longitude}°E`,
-          `\nElevation: ${elevation}m asl`,
-          `\nTimezone difference to GMT+0: ${utcOffsetSeconds}s`
-        );
-
-        const hourly = response.hourly()!;
-        const daily = response.daily()!;
-
-        // Note: The order of weather variables in the URL query and the indices below need to match!
-        const weatherData = {
-          hourly: {
-            time: Array.from(
-              {
-                length:
-                  (Number(hourly.timeEnd()) - Number(hourly.time())) /
-                  hourly.interval(),
-              },
-              (_, i) =>
-                new Date(
-                  (Number(hourly.time()) +
-                    i * hourly.interval() +
-                    utcOffsetSeconds) *
-                    1000
-                )
-            ),
-            temperature_2m: hourly.variables(0)!.valuesArray(),
-          },
-          daily: {
-            time: Array.from(
-              {
-                length:
-                  (Number(daily.timeEnd()) - Number(daily.time())) /
-                  daily.interval(),
-              },
-              (_, i) =>
-                new Date(
-                  (Number(daily.time()) +
-                    i * daily.interval() +
-                    utcOffsetSeconds) *
-                    1000
-                )
-            ),
-            weather_code: daily.variables(0)!.valuesArray(),
-          },
-        };
-
-        // The 'weatherData' object now contains a simple structure, with arrays of datetimes and weather information
-        console.log('\nHourly data:\n', weatherData.hourly);
-        console.log('\nDaily data:\n', weatherData.daily);
+        }));
       } catch (error) {
         console.error(error);
       } finally {
@@ -111,12 +91,12 @@ function App() {
       <h1 className='text-3xl font-bold text'>{data?.city}</h1>
       <p>{data?.countryName}</p>
 
-      <div className='text-[#68bdf2]'>
-        <CloudSun />
-        icon 18 deg
+      <div className='text-[#68bdf2] flex my-10 items-center'>
+        <CloudSun className='size-20' />
+        <span className='text-7xl font-bold'>{data.temperature} °C</span>
       </div>
 
-      <p>Partly Cloudy</p>
+      <p>{data.condition}</p>
     </div>
   );
 }
