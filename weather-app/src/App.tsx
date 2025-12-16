@@ -1,4 +1,4 @@
-import { CloudSun, Sun } from 'lucide-react';
+import { Cloud, CloudRain, CloudSun, Droplet, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useGeolocation } from './useGeolocation';
 
@@ -57,8 +57,7 @@ timezone=auto`
           const data = await res.json();
           //const result = data.current_weather.temperature;
 
-          const temp =
-            data?.current?.temperature_2m;
+          const temp = data?.current?.temperature_2m;
 
           console.log(temp);
 
@@ -90,6 +89,11 @@ timezone=auto`
     fetchWeather();
   }, [lat, lng]);
 
+  const time = new Date().toLocaleString('en-US', {
+    hour: 'numeric',
+    hour12: true,
+  });
+
   if (error) return <p>Error {error}</p>;
 
   return isLoading ? (
@@ -101,27 +105,27 @@ timezone=auto`
 
       <div className='text-[#68bdf2] flex my-10 items-center'>
         <CloudSun className='size-20' />
-        <span className='text-7xl font-bold'>{data?.temperature}</span>
+        <span className='text-7xl font-bold'>{data?.temperature}°</span>
       </div>
 
       <p className='text-xl font-bold'>{data.condition}</p>
 
-      <div className="flex gap-5  p-5 bg-stone-500 rounded-2xl my-5 ">
-        <div className="flex flex-col items-center">
+      <div className='flex p-5 bg-stone-500 rounded-2xl my-5 text-[#c6c6c6] '>
+        <div className='flex flex-col items-center p-4 border-r border-solid border-r-[#aeaeae]'>
           <Sun />
-          <span>12 am</span>
+          <span className='font-bold'>{time}</span>
         </div>
-        <div className="flex flex-col items-center">
-          <Sun />
-          <span>12 am</span>
+        <div className='flex flex-col items-center  p-4 border-r border-solid border-r-[#aeaeae]'>
+          <Cloud />
+          <span className='font-bold'>{data?.temperature}°</span>
         </div>
-        <div className="flex flex-col items-center">
-          <Sun />
-          <span>12 am</span>
+        <div className='flex flex-col items-center  p-4 border-r border-solid border-r-[#aeaeae]'>
+          <CloudRain />
+          <span className='font-bold'>{data?.temperature}°</span>
         </div>
-        <div className="flex flex-col items-center">
-          <Sun />
-          <span>12 am</span>
+        <div className='flex flex-col items-center p-4  '>
+          <Droplet />
+          <span className='font-bold'>{data?.temperature}°</span>
         </div>
       </div>
     </div>
