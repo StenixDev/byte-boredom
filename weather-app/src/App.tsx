@@ -58,9 +58,7 @@ timezone=auto`
           //const result = data.current_weather.temperature;
 
           const temp =
-            data?.current?.temperature_2m +
-            ' ' +
-            data?.current_units['temperature_2m'];
+            data?.current?.temperature_2m;
 
           console.log(temp);
 
@@ -108,7 +106,7 @@ timezone=auto`
 
       <p className='text-xl font-bold'>{data.condition}</p>
 
-      <div className="flex gap-5  p-5 bg-stone-500 rounded-2xl ">
+      <div className="flex gap-5  p-5 bg-stone-500 rounded-2xl my-5 ">
         <div className="flex flex-col items-center">
           <Sun />
           <span>12 am</span>
