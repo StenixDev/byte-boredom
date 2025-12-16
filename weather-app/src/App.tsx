@@ -1,4 +1,4 @@
-import { CloudSun } from 'lucide-react';
+import { CloudSun, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useGeolocation } from './useGeolocation';
 
@@ -106,7 +106,26 @@ timezone=auto`
         <span className='text-7xl font-bold'>{data?.temperature}</span>
       </div>
 
-      <p>{data.condition}</p>
+      <p className='text-xl font-bold'>{data.condition}</p>
+
+      <div className="flex gap-5  p-5 bg-stone-500 rounded-2xl ">
+        <div className="flex flex-col items-center">
+          <Sun />
+          <span>12 am</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <Sun />
+          <span>12 am</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <Sun />
+          <span>12 am</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <Sun />
+          <span>12 am</span>
+        </div>
+      </div>
     </div>
   );
 }
