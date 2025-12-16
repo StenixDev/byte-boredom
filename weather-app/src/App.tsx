@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 type dataTypes = {
   city: string;
   countryName: string;
-  temperature: number;
+  temperature: string;
   condition: string;
 };
 
@@ -40,7 +40,7 @@ function App() {
   const [data, setData] = useState<dataTypes>({
     city: '',
     countryName: '',
-    temperature: 0,
+    temperature: '',
     condition: '',
   });
 
@@ -60,17 +60,19 @@ timezone=auto`
         const data = await res.json();
         //const result = data.current_weather.temperature;
 
-        console.log(
-          data.current.temperature_2m,
-          data.current_units['temperature_2m']
-        );
+        const temp =
+          data.current.temperature_2m +
+          ' ' +
+          data.current_units['temperature_2m'];
 
-        // setData((prevData) => ({
-        //   ...prevData,
-        //   temperature: result,
-        //   condition:
-        //     weatherCodeMap[data.current_weather.weathercode] || 'Unknown',
-        // }));
+        console.log(temp);
+
+        setData((prevData) => ({
+          ...prevData,
+          temperature: temp,
+          condition:
+            weatherCodeMap[data.current.weather_code] || 'Unknown',
+        }));
 
         const getCityResponse = await fetch(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${params.latitude}&longitude=${params.longitude}`
@@ -102,7 +104,7 @@ timezone=auto`
 
       <div className='text-[#68bdf2] flex my-10 items-center'>
         <CloudSun className='size-20' />
-        <span className='text-7xl font-bold'>{data?.temperature} °C</span>
+        <span className='text-7xl font-bold'>{data?.temperature}</span>
       </div>
 
       <p>{data.condition}</p>
