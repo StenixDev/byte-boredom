@@ -1,5 +1,6 @@
 import { CloudSun } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useGeolocation } from './useGeolocation';
 
 type dataTypes = {
   city: string;
@@ -29,13 +30,6 @@ const weatherCodeMap: Record<number, string> = {
   95: 'Thunderstorm',
 };
 
-const params = {
-  latitude: 7.0731,
-  longitude: 125.6128,
-  daily: 'weather_code',
-  hourly: 'temperature_2m',
-};
-
 function App() {
   const [data, setData] = useState<dataTypes>({
     city: '',
@@ -45,46 +39,49 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { lat, lng, error } = useGeolocation();
 
   useEffect(() => {
     async function fetchWeather() {
       try {
         setIsLoading(true);
-        const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?
-latitude=${params.latitude}&
-longitude=${params.longitude}&
+
+        if (lat && lng) {
+          const res = await fetch(
+            `https://api.open-meteo.com/v1/forecast?
+latitude=${lat}&
+longitude=${lng}&
 current=temperature_2m,relative_humidity_2m,is_day,precipitation,rain,weather_code,wind_speed_10m&
 timezone=auto`
-        );
-        const data = await res.json();
-        //const result = data.current_weather.temperature;
+          );
+          const data = await res.json();
+          //const result = data.current_weather.temperature;
 
-        const temp =
-          data.current.temperature_2m +
-          ' ' +
-          data.current_units['temperature_2m'];
+          const temp =
+            data?.current?.temperature_2m +
+            ' ' +
+            data?.current_units['temperature_2m'];
 
-        console.log(temp);
+          console.log(temp);
 
-        setData((prevData) => ({
-          ...prevData,
-          temperature: temp,
-          condition:
-            weatherCodeMap[data.current.weather_code] || 'Unknown',
-        }));
+          setData((prevData) => ({
+            ...prevData,
+            temperature: temp,
+            condition: weatherCodeMap[data.current.weather_code] || 'Unknown',
+          }));
 
-        const getCityResponse = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${params.latitude}&longitude=${params.longitude}`
-        );
+          const getCityResponse = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`
+          );
 
-        const cityResult = await getCityResponse.json();
+          const cityResult = await getCityResponse.json();
 
-        setData((prevData) => ({
-          ...prevData,
-          city: cityResult.city,
-          countryName: cityResult.countryName,
-        }));
+          setData((prevData) => ({
+            ...prevData,
+            city: cityResult.city,
+            countryName: cityResult.countryName,
+          }));
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -93,7 +90,9 @@ timezone=auto`
     }
 
     fetchWeather();
-  }, []);
+  }, [lat, lng]);
+
+  if (error) return <p>Error {error}</p>;
 
   return isLoading ? (
     'Loading...'
