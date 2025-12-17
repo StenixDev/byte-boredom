@@ -49,12 +49,10 @@ function App() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { lat, lng, error } = useGeolocation();
-
+  setIsLoading(true);
   useEffect(() => {
     async function fetchWeather() {
       try {
-        setIsLoading(true);
-
         if (lat && lng) {
           const res = await fetch(
             `https://api.open-meteo.com/v1/forecast?
