@@ -1,12 +1,17 @@
 import { Cloud, CloudRain, CloudSun, Droplet, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useGeolocation } from './useGeolocation';
+import { convertToTime } from './utils/date-time';
 
 type dataTypes = {
   city: string;
   countryName: string;
   temperature: string;
   condition: string;
+  humidity: string;
+  wind: string;
+  sunrise: string;
+  sunset: string;
 };
 
 const weatherCodeMap: Record<number, string> = {
@@ -36,6 +41,10 @@ function App() {
     countryName: '',
     temperature: '',
     condition: '',
+    humidity: '',
+    wind: '',
+    sunrise: '',
+    sunset: '',
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,12 +69,14 @@ timezone=auto`
 
           const temp = data?.current?.temperature_2m;
 
-          console.log(data);
-
           setData((prevData) => ({
             ...prevData,
             temperature: temp,
             condition: weatherCodeMap[data.current.weather_code] || 'Unknown',
+            humidity: data.current.relative_humidity_2m,
+            wind: data.current.wind_speed_10m,
+            sunrise: convertToTime(data.daily.sunrise[0]),
+            sunset: convertToTime(data.daily.sunset[0]),
           }));
 
           const getCityResponse = await fetch(
@@ -107,7 +118,7 @@ timezone=auto`
         <CloudSun className='size-20' />
         <span className='text-7xl font-bold'>{data?.temperature}°</span>
       </div>
-      <p className='text-xl font-bold'>{data.condition}</p>
+      <p className='text-xl font-bold text-stone-300'>{data.condition}</p>
       <div className='flex p-5 bg-stone-500 rounded-2xl my-5 text-[#c6c6c6] '>
         <div className='flex flex-col items-center p-4 border-r border-solid border-r-[#aeaeae]'>
           <Sun />
@@ -129,9 +140,23 @@ timezone=auto`
 
       <div className='border-5 w-xs p-5 border-stone-500 rounded-2xl my-5 text-[#c6c6c6] '>
         <div>day / hourly temp</div>
-        <div className='flex p-3'>
-          <div className='flex-1'>x</div>
-          <div className='flex-1'>y</div>
+        <div className='flex p-3 text-stone-300 font-bold'>
+          <div className='flex-1'>
+            <ul>
+              <li>Humidity</li>
+              <li>Wind</li>
+              <li>Sunrise</li>
+              <li>Sunset</li>
+            </ul>
+          </div>
+          <div className='flex-1'>
+            <ul>
+              <li>{data?.humidity}%</li>
+              <li>{data?.wind} km/h</li>
+              <li>{data?.sunrise}</li>
+              <li>{data?.sunset}</li>
+            </ul>
+          </div>
         </div>
         <div>body / details</div>
       </div>
