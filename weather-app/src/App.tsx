@@ -109,9 +109,9 @@ timezone=auto`
   if (error) return <p>Error {error}</p>;
 
   return isLoading ? (
-    'Loading...'
+    <p className='text-center py-10'>Loading...</p>
   ) : (
-    <div className='w-xl mx-auto pt-20 flex flex-col items-center justify-center'>
+    <div className='w-full sm:w-3/4 md:w-2/3 lg:w-xl mx-auto pt-20 flex flex-col items-center justify-center'>
       <h1 className='text-3xl font-bold text'>{data?.city}</h1>
       <p>{data?.countryName}</p>
       <div className='text-[#68bdf2] flex my-10 items-center'>
