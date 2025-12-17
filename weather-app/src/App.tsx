@@ -49,9 +49,10 @@ function App() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { lat, lng, error } = useGeolocation();
-  setIsLoading(true);
+
   useEffect(() => {
     async function fetchWeather() {
+      setIsLoading(true);
       try {
         if (lat && lng) {
           const res = await fetch(
