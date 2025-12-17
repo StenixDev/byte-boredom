@@ -107,7 +107,7 @@ timezone=auto`
 
   if (error) return <p>Error {error}</p>;
 
-  return isLoading ? (
+  return isLoading || data.temperature === '' ? (
     <p className='text-center py-10'>Loading...</p>
   ) : (
     <div className='w-full sm:w-3/4 md:w-2/3 lg:w-xl mx-auto pt-20 flex flex-col items-center justify-center'>
