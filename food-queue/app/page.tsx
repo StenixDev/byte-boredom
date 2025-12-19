@@ -9,7 +9,7 @@ function Home() {
         </span>
       </h1>
 
-      <div className='py-5 flex gap-4'>
+      <div className='py-5 flex gap-4 flex-wrap items-center justify-center'>
         <Food name='Crispy Fried' price={120} img='/chicken.png' />
         <Food name='Yum Burger' price={79} img='/humberger.png' />
       </div>

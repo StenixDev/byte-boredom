@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Food Queue',
+  title: 'Order Queue',
   description: 'Fast Food Food Queuing App',
 };
 
