@@ -1,4 +1,5 @@
 'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGlobal } from '@/context/global-state';
@@ -23,12 +24,37 @@ type FoodType = {
 function Food({ id, name, description, price, img }: FoodType) {
   const { data, setData } = useGlobal();
 
-  console.log(data);
+  const item = data.find((cv) => cv.id === id);
+  const itemQuantity = item?.quantity ?? 0;
 
-  const itemQuantity = data.find((cv) => cv.id === id)?.quantity;
+  const increment = () => {
+    setData((prev) =>
+      prev.map((i) =>
+        i.id === id ? { ...i, quantity: (i.quantity ?? 0) + 1 } : i
+      )
+    );
+  };
+
+  const decrement = () => {
+    setData(
+      (prev) =>
+        prev
+          .map((i) =>
+            i.id === id ? { ...i, quantity: (i.quantity ?? 0) - 1 } : i
+          )
+          .filter((i) => (i.quantity ?? 0) > 0) // remove items with 0
+    );
+  };
+
+  const addToCart = () => {
+    setData((prev) => [
+      ...prev,
+      { id, name, description, price, img, quantity: 1 },
+    ]);
+  };
 
   return (
-    <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
+    <Card className='w-64 py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
       <CardHeader className='flex flex-col items-center'>
         <Badge
           className='h-5 min-w-5 rounded-full font-mono tabular-nums px-4 py-2 bg-red-600 text-white'
@@ -40,7 +66,7 @@ function Food({ id, name, description, price, img }: FoodType) {
         <div className='relative w-30 h-30'>
           <Image
             src={img}
-            alt='Crispy fried chicken'
+            alt={name}
             fill
             className='object-cover'
             sizes='120px'
@@ -52,54 +78,30 @@ function Food({ id, name, description, price, img }: FoodType) {
       </CardHeader>
 
       <CardFooter className='flex-col gap-2 mt-auto'>
-        {data.length > 0 && data.filter((cv) => cv.id === id).length ? (
-          <div className=''>
-            Quantity: {itemQuantity + ' '}
+        {itemQuantity > 0 ? (
+          <div>
+            Quantity: {itemQuantity}{' '}
             <Button
-              onClick={() =>
-                setData((prev) =>
-                  prev.map((item) =>
-                    item.id === id
-                      ? { ...item, quantity: item.quantity + 1 }
-                      : item
-                  )
-                )
-              }
+              onClick={increment}
               size='icon-sm'
               className='rounded-none w-6 h-6'
-              variant={'outline'}
+              variant='outline'
             >
               +
             </Button>
-            {itemQuantity > 1 && (
-              <Button
-                onClick={() =>
-                  setData((prev) =>
-                    prev.map((item) =>
-                      item.id === id
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
-                    )
-                  )
-                }
-                size='icon-sm'
-                className='rounded-none w-6 h-6
-          '
-              >
-                -
-              </Button>
-            )}
+            <Button
+              onClick={decrement}
+              size='icon-sm'
+              className='rounded-none w-6 h-6'
+            >
+              -
+            </Button>
           </div>
         ) : (
           <Button
-            onClick={() =>
-              setData((cv) => [
-                ...cv,
-                { id, name, description, price, img, quantity: 1 },
-              ])
-            }
+            onClick={addToCart}
             type='submit'
-            className='max-w-xs bg-red-600 hover:bg-red-700 cursor-pointer '
+            className='max-w-xs bg-red-600 hover:bg-red-700 cursor-pointer'
           >
             Add to Cart
           </Button>
@@ -108,4 +110,5 @@ function Food({ id, name, description, price, img }: FoodType) {
     </Card>
   );
 }
+
 export default Food;

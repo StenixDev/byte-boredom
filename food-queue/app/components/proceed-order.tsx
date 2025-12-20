@@ -16,21 +16,23 @@ function ProceedOrder() {
   if (!code) return null; // or loading state
 
   return (
-    <div className='font-semibold text-center'>
-      <Button
-        asChild
-        className='bg-red-600 hover:bg-red-700 text-white px-5 py-1 rounded-md text-2xl'
-      >
-        <Link
-          href={{
-            pathname: '/proceed',
-            query: { code },
-          }}
+    data.length > 0 && (
+      <div className='font-semibold text-center'>
+        <Button
+          asChild
+          className='bg-red-600 hover:bg-red-700 text-white px-5 py-1 rounded-md text-2xl'
         >
-          Proceed
-        </Link>
-      </Button>
-    </div>
+          <Link
+            href={{
+              pathname: '/proceed',
+              query: { code },
+            }}
+          >
+            Proceed
+          </Link>
+        </Button>
+      </div>
+    )
   );
 }
 
