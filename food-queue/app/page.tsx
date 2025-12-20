@@ -9,9 +9,19 @@ function Home() {
         </span>
       </h1>
 
-      <div className='py-5 flex gap-4 flex-wrap items-center justify-center'>
-        <Food name='Crispy Fried' price={120} img='/chicken.png' />
-        <Food name='Yum Burger' price={79} img='/humberger.png' />
+      <div className='py-5 flex gap-4 flex-wrap items-stretch justify-center'>
+        <Food
+          name='Crispy Fried'
+          price={120}
+          img='/chicken.png'
+          description='Juicy, tender chicken cooked to perfection with rich, savory flavors in every bite.'
+        />
+        <Food
+          name='Yum Burger'
+          price={79}
+          img='/humberger.png'
+          description='A juicy, flavorful hamburger with a perfectly grilled patty, fresh toppings, and a soft, toasted bun.'
+        />
       </div>
     </div>
   );
