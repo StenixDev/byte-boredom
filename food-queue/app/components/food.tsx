@@ -17,12 +17,15 @@ type FoodType = {
   description: string;
   price: number;
   img: string;
+  quantity?: number;
 };
 
 function Food({ id, name, description, price, img }: FoodType) {
   const { data, setData } = useGlobal();
 
-  console.log(data[0], data.filter((cv) => cv.id === id).length, id);
+  console.log(data);
+
+  console.log(data.find((cv) => cv.id === id)?.quantity);
 
   return (
     <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
@@ -34,7 +37,16 @@ function Food({ id, name, description, price, img }: FoodType) {
           ₱ {price}
         </Badge>
 
-        <Image src={img} alt='Crispy fried chicken' width={120} height={20} />
+        <div className='relative w-30 h-30'>
+          <Image
+            src={img}
+            alt='Crispy fried chicken'
+            fill
+            className='object-cover'
+            sizes='120px'
+          />
+        </div>
+
         <CardTitle>{name}</CardTitle>
         <CardDescription className='text-black'>{description}</CardDescription>
       </CardHeader>
@@ -44,25 +56,38 @@ function Food({ id, name, description, price, img }: FoodType) {
           <div className=''>
             Quantity: 1{' '}
             <Button
-              onClick={() => setData((cv) => [...cv, { name: 'sting' }])}
+              onClick={() =>
+                setData((prev) =>
+                  prev.map((item) =>
+                    item.id === id
+                      ? { ...item, quantity: item.quantity + 1 }
+                      : item
+                  )
+                )
+              }
               size='icon-sm'
               className='rounded-none w-6 h-6'
               variant={'outline'}
             >
               +
             </Button>
-            <Button
-              size='icon-sm'
-              className='rounded-none w-6 h-6
+            {data.find((cv) => cv.id === id)?.quantity > 1 && (
+              <Button
+                size='icon-sm'
+                className='rounded-none w-6 h-6
           '
-            >
-              -
-            </Button>
+              >
+                -
+              </Button>
+            )}
           </div>
         ) : (
           <Button
             onClick={() =>
-              setData((cv) => [...cv, { id, name, description, price, img }])
+              setData((cv) => [
+                ...cv,
+                { id, name, description, price, img, quantity: 1 },
+              ])
             }
             type='submit'
             className='max-w-xs bg-red-600 hover:bg-red-700 cursor-pointer '
