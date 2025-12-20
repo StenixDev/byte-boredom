@@ -22,7 +22,7 @@ type FoodType = {
 function Food({ id, name, description, price, img }: FoodType) {
   const { data, setData } = useGlobal();
 
-  console.log(data[0]);
+  console.log(data[0], data.filter((cv) => cv.id === id).length, id);
 
   return (
     <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
@@ -40,7 +40,7 @@ function Food({ id, name, description, price, img }: FoodType) {
       </CardHeader>
 
       <CardFooter className='flex-col gap-2 mt-auto'>
-        {data.length > 0 ? (
+        {data.length > 0 && data.filter((cv) => cv.id === id).length ? (
           <div className=''>
             Quantity: 1{' '}
             <Button
