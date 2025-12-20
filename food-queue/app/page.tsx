@@ -1,4 +1,7 @@
+import { Button } from '@/components/ui/button';
 import Food from './components/food';
+import Link from 'next/link';
+import { randomCode } from '@/lib/utils';
 
 const foodList = [
   {
@@ -21,8 +24,9 @@ const foodList = [
 ];
 
 function Home() {
+  const code = randomCode();
   return (
-    <div className=''>
+    <div className='flex flex-col justify-center'>
       <h1 className='font-semibold text-center'>
         <span className='inline-block bg-red-600 text-white px-5 py-1 rounded-md text-2xl'>
           Menu
@@ -40,6 +44,17 @@ function Home() {
             id={food.id}
           />
         ))}
+      </div>
+
+      {}
+
+      <div className='font-semibold text-center'>
+        <Button
+          asChild
+          className=' bg-red-600 hover:bg-red-700 text-white px-5 py-1 rounded-md text-2xl'
+        >
+          <Link href={'/proceed&code=' + code}>Proceed</Link>
+        </Button>
       </div>
     </div>
   );

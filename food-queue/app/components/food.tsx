@@ -25,7 +25,7 @@ function Food({ id, name, description, price, img }: FoodType) {
 
   console.log(data);
 
-  console.log(data.find((cv) => cv.id === id)?.quantity);
+  const itemQuantity = data.find((cv) => cv.id === id)?.quantity;
 
   return (
     <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
@@ -54,7 +54,7 @@ function Food({ id, name, description, price, img }: FoodType) {
       <CardFooter className='flex-col gap-2 mt-auto'>
         {data.length > 0 && data.filter((cv) => cv.id === id).length ? (
           <div className=''>
-            Quantity: 1{' '}
+            Quantity: {itemQuantity + ' '}
             <Button
               onClick={() =>
                 setData((prev) =>
@@ -71,8 +71,17 @@ function Food({ id, name, description, price, img }: FoodType) {
             >
               +
             </Button>
-            {data.find((cv) => cv.id === id)?.quantity > 1 && (
+            {itemQuantity > 1 && (
               <Button
+                onClick={() =>
+                  setData((prev) =>
+                    prev.map((item) =>
+                      item.id === id
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                    )
+                  )
+                }
                 size='icon-sm'
                 className='rounded-none w-6 h-6
           '
