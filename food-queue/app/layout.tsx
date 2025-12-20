@@ -4,6 +4,8 @@ import './globals.css';
 import Header from './components/header';
 import Footer from './components/footer';
 
+import { GlobalProvider } from '@/context/global-state';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -32,7 +34,7 @@ export default function RootLayout({
         <Header />
         <main className='flex-1 w-full flex flex-col bg-lime-400'>
           <div className='max-w-6xl w-full mx-auto  text-black py-5 px-3 flex-1 border-x-[5px] border-red-600 bg-lime-300'>
-            {children}
+            <GlobalProvider>{children}</GlobalProvider>
           </div>
         </main>
         <Footer />

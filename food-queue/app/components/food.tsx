@@ -1,5 +1,7 @@
+'use client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useGlobal } from '@/context/global-state';
 import {
   Card,
   CardDescription,
@@ -17,6 +19,10 @@ type FoodType = {
 };
 
 function Food({ name, description, price, img }: FoodType) {
+  const { data, setData } = useGlobal();
+
+  console.log(data);
+
   return (
     <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
       <CardHeader className='flex flex-col items-center'>
@@ -36,6 +42,7 @@ function Food({ name, description, price, img }: FoodType) {
         <div className=''>
           Quantity: 0{' '}
           <Button
+            onClick={() => setData((cv) => [...cv, { name: 'sting' }])}
             size='icon-sm'
             className='rounded-none w-6 h-6'
             variant={'outline'}
