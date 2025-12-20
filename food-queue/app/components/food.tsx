@@ -12,16 +12,17 @@ import {
 import Image from 'next/image';
 
 type FoodType = {
+  id: number;
   name: string;
   description: string;
   price: number;
   img: string;
 };
 
-function Food({ name, description, price, img }: FoodType) {
+function Food({ id, name, description, price, img }: FoodType) {
   const { data, setData } = useGlobal();
 
-  console.log(data);
+  console.log(data[0]);
 
   return (
     <Card className='w-64  py-3 px-1 bg-lime-400 border-none rounded-md text-center'>
@@ -39,30 +40,36 @@ function Food({ name, description, price, img }: FoodType) {
       </CardHeader>
 
       <CardFooter className='flex-col gap-2 mt-auto'>
-        <div className=''>
-          Quantity: 0{' '}
-          <Button
-            onClick={() => setData((cv) => [...cv, { name: 'sting' }])}
-            size='icon-sm'
-            className='rounded-none w-6 h-6'
-            variant={'outline'}
-          >
-            +
-          </Button>
-          <Button
-            size='icon-sm'
-            className='rounded-none w-6 h-6
+        {data.length > 0 ? (
+          <div className=''>
+            Quantity: 1{' '}
+            <Button
+              onClick={() => setData((cv) => [...cv, { name: 'sting' }])}
+              size='icon-sm'
+              className='rounded-none w-6 h-6'
+              variant={'outline'}
+            >
+              +
+            </Button>
+            <Button
+              size='icon-sm'
+              className='rounded-none w-6 h-6
           '
+            >
+              -
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={() =>
+              setData((cv) => [...cv, { id, name, description, price, img }])
+            }
+            type='submit'
+            className='max-w-xs bg-red-600 hover:bg-red-700 cursor-pointer '
           >
-            -
+            Add to Cart
           </Button>
-        </div>
-        <Button
-          type='submit'
-          className='max-w-xs bg-red-600 hover:bg-red-700 cursor-pointer '
-        >
-          Add to Cart
-        </Button>
+        )}
       </CardFooter>
     </Card>
   );

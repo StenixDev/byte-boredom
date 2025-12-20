@@ -1,5 +1,25 @@
 import Food from './components/food';
 
+const foodList = [
+  {
+    id: 1,
+    name: 'Crispy Fried',
+    description:
+      'Juicy, tender chicken cooked to perfection with rich, savory flavors in every bite.',
+    price: 120,
+    img: '/chicken.png',
+  },
+
+  {
+    id: 2,
+    name: 'Yum Burger',
+    description:
+      'A juicy, flavorful hamburger with a perfectly grilled patty, fresh toppings, and a soft, toasted bun.',
+    price: 79,
+    img: '/humberger.png',
+  },
+];
+
 function Home() {
   return (
     <div className=''>
@@ -10,18 +30,16 @@ function Home() {
       </h1>
 
       <div className='py-5 flex gap-4 flex-wrap items-stretch justify-center'>
-        <Food
-          name='Crispy Fried'
-          price={120}
-          img='/chicken.png'
-          description='Juicy, tender chicken cooked to perfection with rich, savory flavors in every bite.'
-        />
-        <Food
-          name='Yum Burger'
-          price={79}
-          img='/humberger.png'
-          description='A juicy, flavorful hamburger with a perfectly grilled patty, fresh toppings, and a soft, toasted bun.'
-        />
+        {foodList.map((food) => (
+          <Food
+            key={food.id}
+            name={food.name}
+            price={food.price}
+            img={food.img}
+            description={food.description}
+            id={food.id}
+          />
+        ))}
       </div>
     </div>
   );

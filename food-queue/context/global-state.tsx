@@ -4,10 +4,6 @@ import { createContext, useContext, useState } from 'react';
 
 const GlobalContext = createContext();
 
-const initialize = {
-  name: '',
-};
-
 export const GlobalProvider = ({ children }) => {
   const [data, setData] = useState([]);
 
