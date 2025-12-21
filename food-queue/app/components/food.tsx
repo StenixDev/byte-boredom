@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGlobal } from '@/context/global-state';
+import { FoodType } from './types';
 import {
   Card,
   CardDescription,
@@ -11,15 +12,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Image from 'next/image';
-
-type FoodType = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  img: string;
-  quantity?: number;
-};
 
 function Food({ id, name, description, price, img }: FoodType) {
   const { data, setData } = useGlobal();
