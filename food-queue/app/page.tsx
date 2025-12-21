@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import Food from './components/food';
 import ProceedOrder from './components/proceed-order';
 
