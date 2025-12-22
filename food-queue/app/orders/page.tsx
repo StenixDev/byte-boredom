@@ -1,10 +1,12 @@
-async function Orders() {
+// app/orders/page.tsx
+export const dynamic = 'force-dynamic';
+
+export default async function Orders() {
+  // Fetch from DB directly or use the API
   const res = await fetch('http://localhost:3000/api/orders', {
-    next: { revalidate: 5 },
+    cache: 'no-store',
   });
-
   const orders = await res.json();
-  return <div>{orders.length}</div>;
-}
 
-export default Orders;
+  return <div>{orders.length} orders found</div>;
+}

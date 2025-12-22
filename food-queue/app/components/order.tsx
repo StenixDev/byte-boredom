@@ -1,14 +1,13 @@
 'use client';
 import { useGlobal } from '@/context/global-state';
-
 import { Button } from '@/components/ui/button';
-
 import { useSearchParams } from 'next/navigation';
+
 import { useState } from 'react';
+import { submitOrder } from '../action';
 
 function Order() {
   const { data, setData } = useGlobal();
-
   const [success, setSuccess] = useState(false);
 
   const totalQuantity = data.reduce((sum, item) => {
@@ -19,14 +18,11 @@ function Order() {
   const code = searchParams.get('code');
 
   async function handleSubmit() {
-    const result = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, code }),
-    });
+    const result = await submitOrder({ ...data, code });
 
     if (result) {
       setData([]);
+
       setSuccess(true);
     }
   }
