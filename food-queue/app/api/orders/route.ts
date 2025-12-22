@@ -1,4 +1,3 @@
-import { revalidatePath } from 'next/cache';
 let orders = [];
 
 export async function GET() {

@@ -1,12 +1,24 @@
-// app/orders/page.tsx
-export const dynamic = 'force-dynamic';
+// app/orders/OrdersClient.js
+'use client';
 
-export default async function Orders() {
-  // Fetch from DB directly or use the API
-  const res = await fetch('http://localhost:3000/api/orders', {
-    cache: 'no-store',
-  });
-  const orders = await res.json();
+import { useEffect, useState } from 'react';
 
-  return <div>{orders.length} orders found</div>;
+export default function OrdersClient() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchOrders() {
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      setCount(data.length);
+    }
+
+    fetchOrders(); // initial load
+
+    const interval = setInterval(fetchOrders, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <div>Total orders: {count}</div>;
 }
