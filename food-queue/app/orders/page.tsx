@@ -13,6 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { fixOrderStructure } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 export default function OrdersClient() {
   const [orders, setOrders] = useState([]);
@@ -22,7 +24,7 @@ export default function OrdersClient() {
       const res = await fetch('http://localhost:3000/api/orders');
       const data = await res.json();
 
-      setOrders(data);
+      setOrders(fixOrderStructure(data));
     }
 
     fetchOrders(); // initial load
@@ -35,30 +37,43 @@ export default function OrdersClient() {
   console.log(orders);
 
   return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+    <Table className='bg-white'>
       <TableHeader>
         <TableRow>
-          <TableHead className='w-[100px]'>Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className='text-right'>Amount</TableHead>
+          <TableHead className='w-25'>Order #</TableHead>
+          <TableHead>Orders</TableHead>
+          <TableHead>Quantity</TableHead>
+          <TableHead className='text-right'>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {orders.map((order) => (
           <TableRow key={order.id}>
             <TableCell className='font-medium'>{order.code}</TableCell>
-            <TableCell>{order.name}</TableCell>
-            <TableCell>{order.price}</TableCell>
-            <TableCell className='text-right'>Action</TableCell>
+            <TableCell>
+              {order.items.map((item) => (
+                <p key={item.name}>{item.name}</p>
+              ))}
+            </TableCell>
+
+            <TableCell>
+              {order.items.map((item) => (
+                <p key={Math.random()}>{item.quantity}</p>
+              ))}
+            </TableCell>
+
+            <TableCell className='text-right'>
+              <Button className='bg-red-600 cursor-pointer hover:bg-red-700'>
+                Complete
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className='text-right'>$2,500.00</TableCell>
+          <TableCell colSpan={3}></TableCell>
+          <TableCell className='text-right'></TableCell>
         </TableRow>
       </TableFooter>
     </Table>

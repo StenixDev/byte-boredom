@@ -14,8 +14,6 @@ export async function POST(req) {
 
   orders.push(newOrder);
 
-  revalidatePath('/orders');
-
   return Response.json(newOrder, { status: 201 });
 }
 
