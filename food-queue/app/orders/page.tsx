@@ -34,7 +34,14 @@ export default function OrdersClient() {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(orders);
+  console.log(orders.length);
+
+  function handleClick(id: string) {
+    console.log(id);
+  }
+
+  if (orders.length === 0)
+    return <h2 className='text-3xl text-center font-bold'>No orders yet</h2>;
 
   return (
     <Table className='bg-white'>
@@ -63,7 +70,10 @@ export default function OrdersClient() {
             </TableCell>
 
             <TableCell className='text-right'>
-              <Button className='bg-red-600 cursor-pointer hover:bg-red-700'>
+              <Button
+                onClick={() => handleClick(order.code)}
+                className='bg-red-600 cursor-pointer hover:bg-red-700'
+              >
                 Complete
               </Button>
             </TableCell>
