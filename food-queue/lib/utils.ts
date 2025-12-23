@@ -7,11 +7,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export function fixOrderStructure(badData) {
   return badData.map((order) => {
-    const { id, code, ...items } = order;
+    const { id, code, status, ...items } = order;
 
     return {
       id,
       code,
+      status,
       items: Object.keys(items)
         .filter((key) => !isNaN(key))
         .map((key) => items[key]),

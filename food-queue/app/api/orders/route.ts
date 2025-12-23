@@ -9,12 +9,26 @@ export async function POST(req) {
 
   const newOrder = {
     id: Date.now(),
+    status: 'not-completed',
     ...body,
   };
 
   orders.push(newOrder);
 
   return Response.json(newOrder, { status: 201 });
+}
+
+export async function PATCH(req) {
+  const body = await req.json();
+  const { code, status } = body;
+
+  orders = orders.map((order) =>
+    order.code === code ? { ...order, status } : order
+  );
+
+  const updatedOrder = orders.find((order) => order.code === code);
+
+  return Response.json(updatedOrder);
 }
 
 export async function PUT(req) {
