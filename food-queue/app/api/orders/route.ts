@@ -1,4 +1,4 @@
-let orders = [];
+let orders: any[] = [];
 
 export async function GET() {
   return Response.json(orders);
