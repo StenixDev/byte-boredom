@@ -7,7 +7,7 @@ import { useGlobal } from '@/context/global-state';
 
 function ProceedOrder() {
   const { data } = useGlobal();
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState<string | null>(null);
 
   useEffect(() => {
     setCode(randomCode());

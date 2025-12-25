@@ -16,8 +16,10 @@ import {
 import { fixOrderStructure } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+import { OrderType } from '../components/types';
+
 export default function View() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<OrderType[]>([]);
 
   useEffect(() => {
     async function fetchOrders() {

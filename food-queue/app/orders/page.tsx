@@ -15,8 +15,10 @@ import {
 import { fixOrderStructure } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+import { OrderType } from '../components/types';
+
 export default function OrdersClient() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<OrderType[]>([]);
   const [activeTab, setActiveTab] = useState('not-completed');
 
   useEffect(() => {
@@ -113,7 +115,7 @@ export default function OrdersClient() {
                 {activeTab === 'not-completed' && (
                   <TableCell className='text-right'>
                     <Button
-                      onClick={() => handleClick(order.code)}
+                      onClick={() => order.code && handleClick(order.code)}
                       className='bg-red-600 cursor-pointer hover:bg-red-700'
                     >
                       Complete

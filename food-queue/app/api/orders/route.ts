@@ -1,4 +1,6 @@
-let orders: any[] = [];
+import { OrderType } from '../../components/types';
+
+let orders: OrderType[] = [];
 
 export async function GET() {
   return Response.json(orders);
@@ -7,7 +9,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const newOrder = {
+  const newOrder: OrderType = {
     id: Date.now(),
     status: 'not-completed',
     ...body,
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
   return Response.json(newOrder, { status: 201 });
 }
 
-export async function PATCH(req) {
+export async function PATCH(req: Request) {
   const body = await req.json();
   const { code, status } = body;
 
@@ -29,10 +31,9 @@ export async function PATCH(req) {
   const updatedOrder = orders.find((order) => order.code === code);
 
   return Response.json(updatedOrder);
-  // just a commen
 }
 
-export async function PUT(req) {
+export async function PUT(req: Request) {
   const body = await req.json();
 
   orders = orders.map((order) => (order.id === body.id ? body : order));
@@ -40,7 +41,7 @@ export async function PUT(req) {
   return Response.json(body);
 }
 
-export async function DELETE(req) {
+export async function DELETE(req: Request) {
   const { id } = await req.json();
 
   orders = orders.filter((order) => order.id !== id);

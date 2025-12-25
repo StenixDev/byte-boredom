@@ -15,7 +15,7 @@ function Order() {
   const router = useRouter();
 
   const totalQuantity = data.reduce((sum, item) => {
-    return sum + item.quantity * item.price;
+    return sum + (item.quantity ?? 0) * item.price;
   }, 0);
 
   const searchParams = useSearchParams();
@@ -84,10 +84,10 @@ function Order() {
                     {order.price}
                   </td>
                   <td className='px-2 py-4 text-sm text-gray-500 text-right'>
-                    {order.quantity}
+                    {(order.quantity ?? 0)}
                   </td>
                   <td className='px-2 py-4 text-sm text-gray-500 text-right'>
-                    {order.price * order.quantity}
+                    {order.price * (order.quantity ?? 0)}
                   </td>
                 </tr>
               ))}
